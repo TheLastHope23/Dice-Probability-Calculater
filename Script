@@ -1,0 +1,48 @@
+import random
+import matplotlib.pyplot as plt
+
+def roll_three_dice():
+    """Simulate rolling three 6-sided dice and return their sum."""
+    return random.randint(1, 6) + random.randint(1, 6) + random.randint(1, 6)
+
+
+def calculate_probabilities(num_rolls):
+    """Simulate rolling three dice num_rolls times and calculate the probability of each sum."""
+    sum_counts = {i: 0 for i in range(3, 19)}
+    total_rolls = 0
+
+    for _ in range(num_rolls):
+        total_rolls += 1
+        dice_sum = roll_three_dice()
+        sum_counts[dice_sum] += 1
+    probabilities = {dice_sum: count / total_rolls for dice_sum, count in sum_counts.items()}
+    return probabilities
+
+
+def display_probabilities(probabilities):
+    """Display the probabilities of each sum in the console."""
+    print("Sum | Probability")
+    print("-----------------")
+    for dice_sum in range(3, 19):
+        print(f"{dice_sum:3} | {probabilities[dice_sum]:.4f}")
+
+
+def plot_probabilities(probabilities):
+    """Plot the probabilities of the sums using matplotlib."""
+    sums = list(probabilities.keys())
+    probs = list(probabilities.values())
+
+    plt.bar(sums, probs, color='blue', alpha=0.7)
+    plt.xlabel('Sum')
+    plt.ylabel('Probability')
+    plt.title('Probability Distribution of Sums for Rolling 3 Dice')
+    plt.xticks(range(3, 19))
+    plt.show()
+
+
+if __name__ == "__main__":
+    num_rolls = int(input("Enter the number of times to roll the dice: "))
+
+    probabilities = calculate_probabilities(num_rolls)
+    display_probabilities(probabilities)
+    plot_probabilities(probabilities)
